@@ -338,7 +338,10 @@ function showForm(idx){
       }catch(ex){errEl.textContent=t('err_send');errEl.style.display='block';btnSub.disabled=false;btnSub.textContent=t(isLast?'finish':'next');return;}
     }
     saveSub(userEmail,pid,sub);submissions[pid]=sub;
-    if(isLast)showSummary();else showForm(idx+1);
+    if(isLast){
+      try{localStorage.removeItem('v26_'+userEmail+'_'+pid);}catch(e){}
+      showSummary();
+    }else showForm(idx+1);
   });
 }
 
