@@ -330,11 +330,8 @@ function showForm(idx){
     var sub={state:state,periods:periods,category:cat};
     if(!IS_LOCAL){
       try{
-        var rows=state==='close'?periods:[{start:'',end:''}];
-        for(var i=0;i<rows.length;i++){
-          var params=new URLSearchParams({point_id:pid,point_name:pt[1],email:userEmail,point_type:'APM',category:cat,state:state,closure_start:rows[i].start,closure_end:rows[i].end,closure_period:state==='close'?i+1:''});
-          await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',body:params});
-        }
+        var params=new URLSearchParams({point_id:pid,point_name:pt[1],email:userEmail,point_type:'APM',category:cat,state:state,periods:JSON.stringify(state==='close'?periods:[])});
+        await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',body:params});
       }catch(ex){errEl.textContent=t('err_send');errEl.style.display='block';btnSub.disabled=false;btnSub.textContent=t(isLast?'finish':'next');return;}
     }
     saveSub(userEmail,pid,sub);submissions[pid]=sub;
